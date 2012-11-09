@@ -1,0 +1,19 @@
+{
+    "name": "richardfullmer/pr-bot",
+    "description": "Checks pull requests to ensure tests pass",
+    "authors": [
+        {
+            "name": "Richard Fullmer",
+            "email": "richardfullmer@gmail.com"
+        }
+    ],
+    "require": {
+        "knplabs/github-api": "*",
+        "symfony/process": "*",
+        "symfony/yaml": "*",
+        "symfony/console": "*"
+    },
+    "autoload": {
+        "psr-0": { "RDF\\": "src/" }
+    }
+}

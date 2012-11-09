@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+/*
+ * This file is part of ONP.
+ *
+ * Copyright (c) 2012 Opensoft (http://opensoftdev.com)
+ *
+ * The unauthorized use of this code outside the boundaries of
+ * Opensoft is prohibited.
+ */
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+use RDF\PrChecker\Application;
+
+$application = new Application();
+$application->run();
