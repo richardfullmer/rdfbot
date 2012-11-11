@@ -117,7 +117,13 @@ class RepoManager
 
     private function runConfiguration(ProcessRunner $runner)
     {
-        $config = $this->configuration['repos'][$this->username][$this->repo];
+        // Allow repo's to override standard config
+        if (file_exists($this->workingDirectory . '/.rdfbot.yml')) {
+            $config = Yaml::parse($this->workingDirectory . '/.rdfbot.yml');
+            $config = $config['script'];
+        } else {
+            $config = $this->configuration['repos'][$this->username][$this->repo];
+        }
 
         foreach ($config as $command) {
             $process = $runner->run($command, $this->workingDirectory);
