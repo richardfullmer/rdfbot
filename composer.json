@@ -7,11 +7,28 @@
             "email": "richardfullmer@gmail.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "version": "dev-master",
+                "name": "twitter/bootstrap",
+                "source": {
+                    "url": "git@github.com:twitter/bootstrap.git",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
+        }
+    ],
     "require": {
         "knplabs/github-api": "*",
         "symfony/process": "*",
         "symfony/yaml": "*",
-        "symfony/console": "*"
+        "symfony/console": "*",
+        "twitter/bootstrap": "dev-master",
+        "twig/twig": "*",
+        "symfony/filesystem": "*"
     },
     "autoload": {
         "psr-0": { "RDF\\": "src/" }
