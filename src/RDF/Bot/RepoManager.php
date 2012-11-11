@@ -62,7 +62,7 @@ class RepoManager
         }
     }
 
-    public function testPullRequest($pullRequest, OutputInterface $output = null)
+    public function testPullRequest($pullRequest, OutputInterface $output = null, $forceRun = false)
     {
         if (!is_array($pullRequest)) {
             $pullRequest = $this->client->api('pull_request')->show($this->username, $this->repo, $pullRequest);
@@ -84,7 +84,8 @@ class RepoManager
             );
         }
 
-        if ($yamlCache[$this->username][$this->repo][$pullRequest['number']]['head_sha'] == $pullRequest['head']['sha']
+        if (!$forceRun
+            && $yamlCache[$this->username][$this->repo][$pullRequest['number']]['head_sha'] == $pullRequest['head']['sha']
             && in_array($yamlCache[$this->username][$this->repo][$pullRequest['number']]['status'], array(self::STATE_SUCCESS, self::STATE_FAILURE, self::STATE_INTERNAL_NO_TESTS))) {
 
             $output->writeln(sprintf('<info>No work to do... PR %s</info>', $yamlCache[$this->username][$this->repo][$pullRequest['number']]['status']));

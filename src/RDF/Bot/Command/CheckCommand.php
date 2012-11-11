@@ -46,6 +46,7 @@ class CheckCommand extends Command
         $this->addArgument('pull_request_id', InputArgument::OPTIONAL, "A specific PR to test");
         $this->addOption('password', 'p', InputOption::VALUE_REQUIRED, 'Github Password');
         $this->addOption('username', 'u', InputOption::VALUE_REQUIRED, 'Github Username');
+        $this->addOption('force', 'f', InputOption::VALUE_NONE, 'Force the test to run, ignoring the cache');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
@@ -59,7 +60,7 @@ class CheckCommand extends Command
             $repository = $this->repoFactory->factory($client, $username, $repo);
 
             if ($input->getArgument('pull_request_id')) {
-                $repository->testPullRequest($input->getArgument('pull_request_id'), $output);
+                $repository->testPullRequest($input->getArgument('pull_request_id'), $output, $input->getOption('force'));
             } else {
                 $repository->testAllPullRequests($output);
             }
