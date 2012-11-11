@@ -147,7 +147,7 @@ class RepoManager
             $pullRequest['head']['sha'],
             array(
                 'state' => $state,
-                'description' => $description . ' at ' . date('m/d/y G:i:s'),
+                'description' => $description . ' at ' . date('m/d/y G:i:s T'),
                 'target_url' => $url
             )
         );
