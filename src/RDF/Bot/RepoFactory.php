@@ -25,13 +25,24 @@ class RepoFactory
 
     private $twig;
 
+    private $mailer;
+
     private $cacheFile;
 
     private $configuration;
 
-    public function __construct(array $configuration, Filesystem $fs, \Twig_Environment $twig, $gitWorkingDir, $cacheFile)
+    /**
+     * @param array $configuration
+     * @param \Swift_Mailer $mailer
+     * @param \Symfony\Component\Filesystem\Filesystem $fs
+     * @param \Twig_Environment $twig
+     * @param $gitWorkingDir
+     * @param $cacheFile
+     */
+    public function __construct(array $configuration, \Swift_Mailer $mailer,  Filesystem $fs, \Twig_Environment $twig, $gitWorkingDir, $cacheFile)
     {
         $this->configuration = $configuration;
+        $this->mailer = $mailer;
         $this->fs = $fs;
         $this->twig = $twig;
         $this->gitWorkingDir = $gitWorkingDir;
@@ -66,6 +77,6 @@ class RepoFactory
             $process->run();
         }
 
-        return new RepoManager($this->configuration, $client, $this->twig, $this->fs, $username, $repo, $targetWorkingDirectory, $this->cacheFile);
+        return new RepoManager($this->configuration, $client, $this->mailer, $this->twig, $this->fs, $username, $repo, $targetWorkingDirectory, $this->cacheFile);
     }
 }

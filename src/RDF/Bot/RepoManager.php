@@ -35,14 +35,28 @@ class RepoManager
 
     private $twig;
 
+    private $mailer;
+
     private $workingDirectory;
 
     private $fs;
 
-    public function __construct(array $configuration, Client $client, \Twig_Environment $twig, Filesystem $fs, $username, $repo, $workingDirectory, $cacheFile)
+    /**
+     * @param array $configuration
+     * @param \Github\Client $client
+     * @param \Swift_Mailer $mailer
+     * @param \Twig_Environment $twig
+     * @param \Symfony\Component\Filesystem\Filesystem $fs
+     * @param $username
+     * @param $repo
+     * @param $workingDirectory
+     * @param $cacheFile
+     */
+    public function __construct(array $configuration, Client $client, \Swift_Mailer $mailer, \Twig_Environment $twig, Filesystem $fs, $username, $repo, $workingDirectory, $cacheFile)
     {
         $this->configuration = $configuration;
         $this->client = $client;
+        $this->mailer = $mailer;
         $this->twig = $twig;
         $this->fs = $fs;
         $this->username = $username;
@@ -153,6 +167,18 @@ class RepoManager
                 'target_url' => $url
             )
         );
+
+        // Send email
+        if (in_array($state, array(self::STATE_SUCCESS, self::STATE_FAILURE, self::STATE_ERROR))) {
+            $owner = $this->client->api('users')->show($pullRequest['head']['user']['login']);
+            $message = \Swift_Message::newInstance()
+                ->setSubject(sprintf('[rdfbot] %s #%d - %s', $pullRequest['base']['repo']['full_name'], $pullRequest['number'], $state))
+                ->setFrom(array('richard.fullmer@opensoftdev.com' => 'rdfbot'))
+                ->setTo(array($owner['email'], 'richard.fullmer@opensoftdev.com'))
+                ->setBody(sprintf('<p>%s Pull Request %d - build %s.</p><br><a href="%s">%s</a>', $pullRequest['base']['repo']['full_name'], $pullRequest['number'], $state, $url, $url), 'text/html')
+            ;
+            $this->mailer->send($message);
+        }
     }
 
     /**

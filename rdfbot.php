@@ -23,7 +23,11 @@ $twig = new \Twig_Environment($loader);
 $yamlCacheFile = __DIR__ . '/cache.yml';
 $configuration = Yaml::parse(__DIR__ . '/config/config.yml');
 
-$repoFactory = new RepoFactory($configuration, new Filesystem(), $twig, __DIR__ . '/git_working_dir', $yamlCacheFile);
+
+$transport = Swift_SmtpTransport::newInstance('mail.overnightprints.com');
+$mailer = \Swift_Mailer::newInstance($transport);
+
+$repoFactory = new RepoFactory($configuration, $mailer, new Filesystem(), $twig, __DIR__ . '/git_working_dir', $yamlCacheFile);
 
 $application->add(new CheckCommand($repoFactory));
 $application->run();

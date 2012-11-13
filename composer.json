@@ -28,7 +28,8 @@
         "symfony/console": "*",
         "twitter/bootstrap": "dev-master",
         "twig/twig": "*",
-        "symfony/filesystem": "*"
+        "symfony/filesystem": "*",
+        "swiftmailer/swiftmailer": "*"
     },
     "autoload": {
         "psr-0": { "RDF\\": "src/" }
