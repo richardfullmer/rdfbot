@@ -211,7 +211,7 @@ class RepoManager
         $file = $filepath . '/' . $pullRequest['head']['sha'] . '.html';
         file_put_contents($file, $template);
 
-        return sprintf('http://sally/rdfbot/builds/%s/%s/%s.html',
+        return sprintf('http://rdfbot-lv.lv01.opensoftdev.com/builds/%s/%s/%s.html',
             $pullRequest['head']['user']['login'],
             $pullRequest['head']['repo']['name'],
             $pullRequest['head']['sha']
