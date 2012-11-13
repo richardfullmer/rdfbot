@@ -104,6 +104,7 @@ class RepoManager
             $state = $this->runConfiguration($runner);
 
             $yamlCache[$this->username][$this->repo][$pullRequest['number']]['status'] = $state;
+            $yamlCache[$this->username][$this->repo][$pullRequest['number']]['head_sha'] = $pullRequest['head']['sha'];
             $this->updateRemoteProgress($state, 'rdfbot - ' . $state, $runner->getRecordedOutput(), $pullRequest);
         } catch (\Exception $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
