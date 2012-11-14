@@ -20,6 +20,8 @@ repos:
             - php app/console -e=test doctrine:database:create
             - php app/console -e=test doctrine:schema:create
             - phpunit -c app/
+            - chmod -R 777 app/cache app/logs
+            - php app/console -e=test behat --format progress,failed
         Microsites:
             - if [ ! -f app/config/parameters.ini ]; then cp app/config/parameters.ini.dist app/config/parameters.ini; fi
             - curl -s http://getcomposer.org/installer | php

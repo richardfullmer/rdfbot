@@ -171,10 +171,14 @@ class RepoManager
         // Send email
         if (in_array($state, array(self::STATE_SUCCESS, self::STATE_FAILURE, self::STATE_ERROR))) {
             $owner = $this->client->api('users')->show($pullRequest['head']['user']['login']);
+            $to = array('richard.fullmer@opensoftdev.com');
+            if (isset($owner['email']) && !empty($owner['email'])) {
+                $to[] = $owner['email'];
+            }
             $message = \Swift_Message::newInstance()
                 ->setSubject(sprintf('[rdfbot] %s #%d - %s', $pullRequest['base']['repo']['full_name'], $pullRequest['number'], $state))
                 ->setFrom(array('richard.fullmer@opensoftdev.com' => 'rdfbot'))
-                ->setTo(array($owner['email'], 'richard.fullmer@opensoftdev.com'))
+                ->setTo($to)
                 ->setBody(sprintf('<p>%s Pull Request %d - build %s.</p><br><a href="%s">%s</a>', $pullRequest['base']['repo']['full_name'], $pullRequest['number'], $state, $url, $url), 'text/html')
             ;
             $this->mailer->send($message);
