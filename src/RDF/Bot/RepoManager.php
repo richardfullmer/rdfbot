@@ -158,7 +158,7 @@ class RepoManager
 
         // Update status to failed
         $this->client->api('repos')->statuses()->create(
-            $pullRequest['head']['user']['login'],
+            $pullRequest['head']['owner']['login'],
             $pullRequest['head']['repo']['name'],
             $pullRequest['head']['sha'],
             array(
@@ -170,7 +170,7 @@ class RepoManager
 
         // Send email
         if (in_array($state, array(self::STATE_SUCCESS, self::STATE_FAILURE, self::STATE_ERROR))) {
-            $owner = $this->client->api('users')->show($pullRequest['head']['user']['login']);
+            $owner = $this->client->api('users')->show($pullRequest['user']['login']);
             $to = array('richard.fullmer@opensoftdev.com');
             if (isset($owner['email']) && !empty($owner['email'])) {
                 $to[] = $owner['email'];
@@ -229,7 +229,7 @@ class RepoManager
     private function writeResults($pullRequest, $output, $status)
     {
         // write the results to the web filesystem
-        $filepath = sprintf(__DIR__ . '/../../../web/builds/%s/%s', $pullRequest['head']['user']['login'], $pullRequest['head']['repo']['name']);
+        $filepath = sprintf(__DIR__ . '/../../../web/builds/%s/%s', $pullRequest['head']['owner']['login'], $pullRequest['head']['repo']['name']);
         $this->fs->mkdir($filepath);
 
         $template = $this->twig->render('build.html.twig', array(
@@ -242,7 +242,7 @@ class RepoManager
         file_put_contents($file, $template);
 
         return sprintf('http://rdfbot-lv.lv01.opensoftdev.com/builds/%s/%s/%s.html',
-            $pullRequest['head']['user']['login'],
+            $pullRequest['head']['owner']['login'],
             $pullRequest['head']['repo']['name'],
             $pullRequest['head']['sha']
         );
