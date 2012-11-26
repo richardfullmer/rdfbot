@@ -110,7 +110,7 @@ class RepoManager
             // fetch latest and pull it in
             // fetch refs in case there are unknown remote PR's to the local repo
             $runner->run('git fetch');
-            $runner->run('git checkout rdfbot');
+            $this->cleanup($runner);
             $runner->run('git ls-files --other --exclude-standard | xargs rm -rf'); // cleans untracked files if there are any
             $runner->run(sprintf('git checkout -b pr/%d --track origin/pr/%d', $pullRequest['number'], $pullRequest['number']));
 
@@ -158,7 +158,7 @@ class RepoManager
 
         // Update status to failed
         $this->client->api('repos')->statuses()->create(
-            $pullRequest['head']['owner']['login'],
+            $pullRequest['head']['repo']['owner']['login'],
             $pullRequest['head']['repo']['name'],
             $pullRequest['head']['sha'],
             array(
@@ -229,7 +229,7 @@ class RepoManager
     private function writeResults($pullRequest, $output, $status)
     {
         // write the results to the web filesystem
-        $filepath = sprintf(__DIR__ . '/../../../web/builds/%s/%s', $pullRequest['head']['owner']['login'], $pullRequest['head']['repo']['name']);
+        $filepath = sprintf(__DIR__ . '/../../../web/builds/%s/%s', $pullRequest['head']['repo']['owner']['login'], $pullRequest['head']['repo']['name']);
         $this->fs->mkdir($filepath);
 
         $template = $this->twig->render('build.html.twig', array(
@@ -242,7 +242,7 @@ class RepoManager
         file_put_contents($file, $template);
 
         return sprintf('http://rdfbot-lv.lv01.opensoftdev.com/builds/%s/%s/%s.html',
-            $pullRequest['head']['owner']['login'],
+            $pullRequest['head']['repo']['owner']['login'],
             $pullRequest['head']['repo']['name'],
             $pullRequest['head']['sha']
         );
