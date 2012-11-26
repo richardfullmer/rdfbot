@@ -112,7 +112,7 @@ class RepoManager
             $runner->run('git fetch');
             $this->cleanup($runner);
             $runner->run('git ls-files --other --exclude-standard | xargs rm -rf'); // cleans untracked files if there are any
-            $runner->run(sprintf('git checkout -b pr/%d --track origin/pr/%d', $pullRequest['number'], $pullRequest['number']));
+            $runner->run(sprintf('git checkout -f -b pr/%d --track origin/pr/%d', $pullRequest['number'], $pullRequest['number']));
 
             $this->updateRemoteProgress(self::STATE_PENDING, 'rdfbot - running build', $runner->getRecordedOutput(), $pullRequest);
             $state = $this->runConfiguration($runner);
@@ -210,7 +210,7 @@ class RepoManager
     private function cleanup(ProcessRunner $processRunner)
     {
         // cleanup
-        $processRunner->run('git checkout rdfbot');
+        $processRunner->run('git checkout -f rdfbot');
         $process = $processRunner->run('git branch');
         foreach (explode("\n", $process->getOutput()) as $line) {
             $line = trim(str_replace('*', '', $line));
