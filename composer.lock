@@ -1,5 +1,5 @@
 {
-    "hash": "b635bf19cc6fd87bfde458e061876105",
+    "hash": "13236de224c9a1315fcdc4be24e0c375",
     "packages": [
         {
             "name": "knplabs/github-api",
@@ -7,12 +7,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/php-github-api.git",
-                "reference": "65e9828c5b6005b3b0db092c02f2919541157399"
+                "reference": "7cae754a1198512b0237009b581005ebc8ca3152"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/KnpLabs/php-github-api/archive/65e9828c5b6005b3b0db092c02f2919541157399.zip",
-                "reference": "65e9828c5b6005b3b0db092c02f2919541157399",
+                "url": "https://github.com/KnpLabs/php-github-api/archive/7cae754a1198512b0237009b581005ebc8ca3152.zip",
+                "reference": "7cae754a1198512b0237009b581005ebc8ca3152",
                 "shasum": ""
             },
             "require": {
@@ -20,7 +20,7 @@
                 "ext-curl": "*",
                 "kriswallsmith/buzz": ">=0.7"
             },
-            "time": "1352191641",
+            "time": "2012-11-15 19:30:42",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -397,15 +397,18 @@
             },
             "type": "library",
             "installation-source": "source",
-            "time": "1351659596"
+            "time": "2012-10-31 04:59:56"
         }
     ],
-    "packages-dev": null,
+    "packages-dev": [
+
+    ],
     "aliases": [
 
     ],
     "minimum-stability": "stable",
     "stability-flags": {
+        "knplabs/github-api": 20,
         "twitter/bootstrap": 20
     }
 }
