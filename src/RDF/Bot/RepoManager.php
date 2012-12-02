@@ -207,7 +207,6 @@ class RepoManager
     private function updateRemoteProgress($state, $description, $output, $pullRequest)
     {
         $url = $this->writeResults($pullRequest, $output, $state);
-
         // Update status to failed
         $this->client->api('repos')->statuses()->create(
             $pullRequest['head']['repo']['owner']['login'],
@@ -293,7 +292,7 @@ class RepoManager
         $file = $filepath . '/' . $pullRequest['head']['sha'] . '.html';
         file_put_contents($file, $template);
 
-        return sprintf('http://rdfbot-lv.lv01.opensoftdev.com/builds/%s/%s/%s.html',
+        return sprintf('http://rdfbot-lv.lv01.opensoftdev.com/%s/%s/%s.html',
             $pullRequest['head']['repo']['owner']['login'],
             $pullRequest['head']['repo']['name'],
             $pullRequest['head']['sha']

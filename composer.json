@@ -19,11 +19,15 @@
                     "reference": "master"
                 }
             }
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/richardfullmer/php-github-api"
         }
     ],
     "require": {
         "pimple/pimple": "*",
-        "knplabs/github-api": "1.1.x-dev",
+        "knplabs/github-api": "dev-status-create-fix as 1.1.x-dev",
         "symfony/process": "*",
         "symfony/yaml": "*",
         "symfony/console": "*",
