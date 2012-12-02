@@ -22,6 +22,7 @@
         }
     ],
     "require": {
+        "pimple/pimple": "*",
         "knplabs/github-api": "1.1.x-dev",
         "symfony/process": "*",
         "symfony/yaml": "*",

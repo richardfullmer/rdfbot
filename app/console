@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+<?php
+/*
+ * This file is part of rdfbot.
+ *
+ * Copyright (c) 2012 Opensoft (http://opensoftdev.com)
+ *
+ * The unauthorized use of this code outside the boundaries of
+ * Opensoft is prohibited.
+ */
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+
+$container = require_once __DIR__ . '/app.php';
+
+$application = new Application();
+$application->add($container['command.check_command']);
+$application->run();

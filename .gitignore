@@ -1,6 +1,8 @@
-vendor
-cache.yml
-config/config.yml
-git_working_dir/
+composer.phar
+composer.lock
+vendor/
+app/cache.yml
+app/config/config.yml
+app/git_working_dir/
 web/builds/
 web/status/
