@@ -1,0 +1,31 @@
+# maybe do a default?
+script:
+    - curl -s http://getcomposer.org/installer | php
+    - php composer.phar install --dev
+    - phpunit
+
+repos:
+    opensoft:
+        ONP:
+            - git submodule update --init
+            - if [ -f composer.json ]; then rm -rf vendor; fi
+            - if [ -f composer.json ]; then curl -s http://getcomposer.org/installer | php; fi
+            - if [ -f composer.json ]; then php composer.phar install --dev; fi
+            - if [ -f app/phpunit.xml.dist ]; then php vendor/bin/phpunit -c app/; fi
+            - if [ -f behat.yml ]; then php vendor/bin/behat --format progress,failed --tags ~javascript; fi
+        CSU:
+            - if [ ! -f app/config/parameters.ini ]; then cp app/config/parameters.ini.dist app/config/parameters.ini; fi
+            - php bin/vendors install
+            - php app/console -e=test doctrine:database:drop --force
+            - php app/console -e=test doctrine:database:create
+            - php app/console -e=test doctrine:schema:create
+            - phpunit -c app/
+            - chmod -R 777 app/cache app/logs
+            - php app/console -e=test behat --format progress,failed --tags ~javascript
+        Microsites:
+            - if [ ! -f app/config/parameters.ini ]; then cp app/config/parameters.ini.dist app/config/parameters.ini; fi
+            - curl -s http://getcomposer.org/installer | php
+            - php composer.phar install --dev
+            - phpunit -c app/
+        sandbox:
+            - echo "this"
