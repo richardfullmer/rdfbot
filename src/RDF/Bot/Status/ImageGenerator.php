@@ -55,7 +55,7 @@ class ImageGenerator
         $image = $imagine->create($size, $color);
         $image->draw()->text($text, new Font($this->font, 12, new Color($textColor)), new Point(0,0));
 
-        $filepath = sprintf(__DIR__ . '/../../../../web/status/%s', $username);
+        $filepath = sprintf(__DIR__ . '/../../../../web/%s', $username);
         $this->fs->mkdir($filepath);
         $image->save($filepath . '/' . $repo . '.png');
     }

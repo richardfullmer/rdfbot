@@ -281,7 +281,7 @@ class RepoManager
     private function writeResults($pullRequest, $output, $status)
     {
         // write the results to the web filesystem
-        $filepath = sprintf(__DIR__ . '/../../../web/builds/%s/%s', $pullRequest['head']['repo']['owner']['login'], $pullRequest['head']['repo']['name']);
+        $filepath = sprintf(__DIR__ . '/../../../web/%s/%s', $pullRequest['head']['repo']['owner']['login'], $pullRequest['head']['repo']['name']);
         $this->fs->mkdir($filepath);
 
         $template = $this->twig->render('build.html.twig', array(
