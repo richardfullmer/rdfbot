@@ -68,7 +68,7 @@ class CheckCommand extends Command
         } else {
             $config = $this->repoFactory->getConfiguration();
 
-            foreach ($config['repos'] as $username => $repos) {
+            foreach ($config['repositories'] as $username => $repos) {
                 foreach ($repos as $repo => $repoConfig) {
                     $repository = $this->repoFactory->factory($client, $username, $repo);
                     $repository->testAllPullRequests($output);

@@ -8,42 +8,48 @@
  * Opensoft is prohibited.
  */
 
-$container = new Pimple();
+use Silex\Application;
+use Silex\Provider\TwigServiceProvider;
+use Silex\Provider\SwiftmailerServiceProvider;
+use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Filesystem\Filesystem;
+use RDF\Bot\RepoFactory;
 
-$container['config'] = \Symfony\Component\Yaml\Yaml::parse(__DIR__ . '/config/config.yml');
-$container['template_path'] = __DIR__ . '/templates';
-$container['yaml_cache_file'] = __DIR__ . '/cache.yml';
-$container['git_working_dir'] = __DIR__ . '/git_working_dir';
-$container['swift.mail_from_address'] = 'mail.overnightprints.com';
+$app = new Application();
+$configuration = Yaml::parse(__DIR__ . '/config/config.yml');
 
-$container['twig_loader_filesystem'] = $container->share(function($c) {
-    return new \Twig_Loader_Filesystem($c['template_path']);
+// Swiftmailer
+$app['swiftmailer.options'] = array('host' => $configuration['parameters']['mailer_host']);
+$app->register(new SwiftmailerServiceProvider());
+
+// Twig
+$app->register(new TwigServiceProvider(), array(
+    'twig.path' => array(__DIR__ . '/templates'),
+    'twig.options' => array('cache' => __DIR__ . '/cache')
+));
+
+// Parameters
+$app['config'] = $configuration;
+$app['git_working_dir'] = __DIR__ . '/git_working_dir';
+$app['yaml_cache_file'] = __DIR__ . '/cache.yml';
+
+// Other Services
+$app['filesystem'] = $app->share(function($c) {
+    return new Filesystem();
 });
-$container['twig_environment'] = $container->share(function($c) {
-    return new \Twig_Environment($c['twig_loader_filesystem']);
-});
-$container['swift_smtptransport'] = $container->share(function($c) {
-    return Swift_SmtpTransport::newInstance($c['swift.mail_from_address']);
-});
-$container['mailer'] = $container->share(function($c) {
-    return \Swift_Mailer::newInstance($c['swift_smtptransport']);
-});
-$container['filesystem'] = $container->share(function($c) {
-    return new \Symfony\Component\Filesystem\Filesystem();
-});
-$container['repo_factory'] = $container->share(function($c) {
-    return new \RDF\Bot\RepoFactory(
+$app['repo_factory'] = $app->share(function($c) {
+    return new RepoFactory(
         $c['config'],
         $c['mailer'],
         $c['filesystem'],
-        $c['twig_environment'],
+        $c['twig'],
         $c['git_working_dir'],
         $c['yaml_cache_file']
     );
 });
-$container['command.check_command'] = $container->share(function($c) {
+$app['command.check_command'] = $app->share(function($c) {
     return new \RDF\Bot\Command\CheckCommand($c['repo_factory']);
 });
 
 
-return $container;
+return $app;

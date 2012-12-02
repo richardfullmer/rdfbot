@@ -190,7 +190,7 @@ class RepoManager
             $config = Yaml::parse($this->workingDirectory . '/.rdfbot.yml');
             $config = $config['script'];
         } else {
-            $config = $this->configuration['repos'][$this->username][$this->repo];
+            $config = $this->configuration['repositories'][$this->username][$this->repo]['scripts'];
         }
 
         foreach ($config as $command) {

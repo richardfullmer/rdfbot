@@ -26,16 +26,16 @@
         }
     ],
     "require": {
-        "pimple/pimple": "*",
+        "silex/silex": "1.0.x-dev",
+        "twig/twig": "*",
         "knplabs/github-api": "dev-status-create-fix as 1.1.x-dev",
         "symfony/process": "*",
         "symfony/yaml": "*",
         "symfony/console": "*",
-        "twitter/bootstrap": "dev-master",
-        "twig/twig": "*",
         "symfony/filesystem": "*",
         "swiftmailer/swiftmailer": "*",
-        "imagine/Imagine": "*"
+        "imagine/Imagine": "*",
+        "twitter/bootstrap": "dev-master"
     },
     "autoload": {
         "psr-0": { "RDF\\": "src/" }

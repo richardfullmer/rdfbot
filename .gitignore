@@ -1,6 +1,7 @@
 composer.phar
 composer.lock
 vendor/
+app/cache/
 app/cache.yml
 app/config/config.yml
 app/git_working_dir/
