@@ -1,6 +1,54 @@
 {
-    "hash": "13236de224c9a1315fcdc4be24e0c375",
+    "hash": "d8719aa9cc794ff46302239baca07926",
     "packages": [
+        {
+            "name": "imagine/Imagine",
+            "version": "v0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/avalanche123/Imagine",
+                "reference": "v0.3.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/avalanche123/Imagine/zipball/v0.3.0",
+                "reference": "v0.3.0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "sami/sami": "dev-master"
+            },
+            "time": "2012-07-28 17:35:18",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-0": {
+                    "Imagine": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bulat Shakirzyanov",
+                    "email": "mallluhuct@gmail.com",
+                    "homepage": "http://avalanche123.com"
+                }
+            ],
+            "description": "Image processing for PHP 5.3",
+            "homepage": "http://imagine.readthedocs.org/",
+            "keywords": [
+                "image manipulation",
+                "image processing",
+                "drawing",
+                "graphics"
+            ]
+        },
         {
             "name": "knplabs/github-api",
             "version": "dev-master",
@@ -395,9 +443,9 @@
                 "url": "git@github.com:twitter/bootstrap.git",
                 "reference": "master"
             },
+            "time": "2012-10-31 04:59:56",
             "type": "library",
-            "installation-source": "source",
-            "time": "2012-10-31 04:59:56"
+            "installation-source": "source"
         }
     ],
     "packages-dev": [

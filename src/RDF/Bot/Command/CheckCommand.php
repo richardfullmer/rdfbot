@@ -63,6 +63,7 @@ class CheckCommand extends Command
                 $repository->testPullRequest($input->getArgument('pull_request_id'), $output, $input->getOption('force'));
             } else {
                 $repository->testAllPullRequests($output);
+                $repository->testBranches($output);
             }
         } else {
             $config = $this->repoFactory->getConfiguration();
@@ -71,6 +72,7 @@ class CheckCommand extends Command
                 foreach ($repos as $repo => $repoConfig) {
                     $repository = $this->repoFactory->factory($client, $username, $repo);
                     $repository->testAllPullRequests($output);
+                    $repository->testBranches($output);
                 }
             }
         }

@@ -29,7 +29,8 @@
         "twitter/bootstrap": "dev-master",
         "twig/twig": "*",
         "symfony/filesystem": "*",
-        "swiftmailer/swiftmailer": "*"
+        "swiftmailer/swiftmailer": "*",
+        "imagine/Imagine": "*"
     },
     "autoload": {
         "psr-0": { "RDF\\": "src/" }

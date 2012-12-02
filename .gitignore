@@ -2,3 +2,4 @@ vendor
 cache.yml
 git_working_dir/
 web/builds/
+web/status/

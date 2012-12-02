@@ -67,6 +67,58 @@ class RepoManager
 
     }
 
+    public function testBranches(OutputInterface $output = null)
+    {
+        $branches = $this->client->api('repos')->branches($this->username, $this->repo);
+
+        $statusImager = new \RDF\Bot\Status\ImageGenerator($this->fs, '/usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-B.ttf');
+
+        foreach ($branches as $branch) {
+            $yamlCache = file_exists($this->cacheFile) ? Yaml::parse($this->cacheFile) : array();
+            $runner = new ProcessRunner($this->workingDirectory, $output);
+
+            if (!isset($yamlCache[$this->username][$this->repo][$branch['name']])) {
+                $yamlCache[$this->username][$this->repo][$branch['name']] = array(
+                    'head_sha' => $branch['commit']['sha'],
+                    'status' => 'pending'
+                );
+            }
+            if ($yamlCache[$this->username][$this->repo][$branch['name']]['head_sha'] == $branch['commit']['sha']
+                && in_array($yamlCache[$this->username][$this->repo][$branch['name']]['status'], array(self::STATE_SUCCESS, self::STATE_FAILURE, self::STATE_INTERNAL_NO_TESTS))) {
+
+                $output->writeln(sprintf('<info>No work to do... PR %s</info>', $yamlCache[$this->username][$this->repo][$branch['name']]['status']));
+                return;
+            }
+
+            $output->writeln(sprintf("<comment>Testing %s</comment>", $branch['name']));
+            try {
+                // fetch latest and pull it in
+                // fetch refs in case there are unknown remote PR's to the local repo
+                $runner->run('git fetch');
+                $this->cleanup($runner);
+                $runner->run('git ls-files --other --exclude-standard | xargs rm -rf'); // cleans untracked files if there are any
+                $runner->run(sprintf('git checkout -f %s', $branch['name']));
+                $runner->run('git pull');
+
+                $state = $this->runConfiguration($runner);
+
+                $yamlCache[$this->username][$this->repo][$branch['name']]['status'] = $state;
+                $yamlCache[$this->username][$this->repo][$branch['name']]['head_sha'] = $branch['commit']['sha'];
+
+                // Generate an image
+                $statusImager->generate($this->username, $this->repo, $state, $branch['commit']['sha']);
+            } catch (\Exception $e) {
+                $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+            }
+
+            // cleanup
+            $this->cleanup($runner);
+
+            file_put_contents($this->cacheFile, Yaml::dump($yamlCache));
+
+        }
+    }
+
     public function testAllPullRequests(OutputInterface $output = null)
     {
         $openPullRequests = $this->client->api('pull_request')->all($this->username, $this->repo);
