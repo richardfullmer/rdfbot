@@ -1,5 +1,5 @@
-RDFBot - In house travis
-========================
+RDFBot - In house travis for your private repos
+===============================================
 
 Install:
 
