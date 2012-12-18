@@ -1,4 +1,5 @@
 parameters:
+    host: "calvin.printfulfillmentservices.com/rdfbot"
     mailer_host: "localhost"
 repositories:
     opensoft:

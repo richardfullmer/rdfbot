@@ -44,7 +44,8 @@ $app['repo_factory'] = $app->share(function($c) {
         $c['filesystem'],
         $c['twig'],
         $c['git_working_dir'],
-        $c['yaml_cache_file']
+        $c['yaml_cache_file'],
+        $c['config']['parameters']['host']
     );
 });
 $app['command.check_command'] = $app->share(function($c) {

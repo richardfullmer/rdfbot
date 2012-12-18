@@ -51,8 +51,9 @@ class RepoManager
      * @param $repo
      * @param $workingDirectory
      * @param $cacheFile
+     * @param $host
      */
-    public function __construct(array $configuration, Client $client, \Swift_Mailer $mailer, \Twig_Environment $twig, Filesystem $fs, $username, $repo, $workingDirectory, $cacheFile)
+    public function __construct(array $configuration, Client $client, \Swift_Mailer $mailer, \Twig_Environment $twig, Filesystem $fs, $username, $repo, $workingDirectory, $cacheFile, $host)
     {
         $this->configuration = $configuration;
         $this->client = $client;
@@ -63,7 +64,7 @@ class RepoManager
         $this->repo = $repo;
         $this->workingDirectory = $workingDirectory;
         $this->cacheFile = $cacheFile;
-
+        $this->host = $host;
 
     }
 
@@ -292,7 +293,8 @@ class RepoManager
         $file = $filepath . '/' . $pullRequest['head']['sha'] . '.html';
         file_put_contents($file, $template);
 
-        return sprintf('http://rdfbot-lv.lv01.opensoftdev.com/%s/%s/%s.html',
+        return sprintf('http://%s/%s/%s/%s.html',
+            $this->host,
             $pullRequest['head']['repo']['owner']['login'],
             $pullRequest['head']['repo']['name'],
             $pullRequest['head']['sha']
